@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<robot name="int_brain" xmlns:xacro="http://wiki.ros.org/xacro">
+    <xacro:macro name="motor_assembly_right" params="prefix parent_link *origin">
+        <joint name="${prefix}_mount_joint" type="fixed">
+            <parent link="${parent_link}" />
+            <child link="${prefix}_motor_chassis" />
+            <xacro:insert_block name="origin" />
+        </joint>
+
+        <link name="${prefix}_motor_chassis">
+            <inertial>
+                <origin xyz="4.591460422141625e-06 7.406434469311372e-05 -0.026615985890666594"
+                    rpy="0 0 0" />
+                <mass value="0.12073859672562967" />
+                <inertia ixx="5.2e-05" iyy="5.2e-05" izz="2.2e-05" ixy="0.0" iyz="-0.0" ixz="0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="0.0024 0 0" rpy="0 0 0.319" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/motor_chassis.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin xyz="0.0024 0 0" rpy="0 0 0.319" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/motor_chassis.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="${prefix}_motor_shaft">
+            <inertial>
+                <origin xyz="0 0 -0.01075" rpy="0 0 0" />
+                <mass value="0.004651202181185255" />
+                <inertia ixx="1.9e-07" iyy="1.9e-07" izz="0.25e-07" ixy="0.0" iyz="0.0" ixz="0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="-0.000128 -0.006999 -0.0215" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/motor_shaft.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin xyz="-0.000128 -0.006999 -0.0215" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/motor_shaft.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_shaft_joint" type="continuous">
+            <origin xyz="0.000128 0.006999 0.019" rpy="0 0 0" />
+            <parent link="${prefix}_motor_chassis" />
+            <child link="${prefix}_motor_shaft" />
+            <axis xyz="0.0 0.0 -1.0" />
+        </joint>
+
+        <link name="${prefix}_coupler">
+            <inertial>
+                <origin xyz="-4.2028881321571695e-08 -0.000331924 -0.026254713547370766" rpy="0 0 0" />
+                <mass value="0.05134763321280873" />
+                <inertia ixx="3e-06" iyy="4e-06" izz="3e-06" ixy="0.0" iyz="-0.0" ixz="-0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/coupler.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/coupler.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_coupler_joint" type="fixed">
+            <origin xyz="0.0 0.0 0.025" rpy="0 0 0" />
+            <parent link="${prefix}_motor_shaft" />
+            <child link="${prefix}_coupler" />
+        </joint>
+
+        <link name="${prefix}_mecanum_wheel">
+            <inertial>
+                <origin xyz="8.87250126775198e-09 3.426297477759109e-08 0.0007191005329574657"
+                    rpy="0 0 0" />
+                <mass value="0.13184466520149532" />
+                <inertia ixx="0.000103" iyy="0.000103" izz="0.000179" ixy="0.0" iyz="0.0" ixz="-0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/mecanum_wheel.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="black" />
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <!-- <mesh filename="file://$(find
+                    int_brain_description)/meshes/mecanum_wheel.stl"
+                        scale="0.001 0.001 0.001" /> -->
+                    <cylinder radius="0.05" length="0.0375" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_wheel_joint" type="fixed">
+            <origin xyz="0.0 0.0 -0.005" rpy="0 0 0" />
+            <parent link="${prefix}_coupler" />
+            <child link="${prefix}_mecanum_wheel" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="motor_assembly_left" params="prefix parent_link *origin">
+        <joint name="${prefix}_mount_joint" type="fixed">
+            <parent link="${parent_link}" />
+            <child link="${prefix}_motor_chassis" />
+            <xacro:insert_block name="origin" />
+        </joint>
+
+        <link name="${prefix}_motor_chassis">
+            <inertial>
+                <origin xyz="4.591460422141625e-06 7.406434469311372e-05 -0.026615985890666594"
+                    rpy="0 0 0" />
+                <mass value="0.12073859672562967" />
+                <inertia ixx="5.2e-05" iyy="5.2e-05" izz="2.2e-05" ixy="0.0" iyz="-0.0" ixz="0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="0.0024 0 0" rpy="0 0 0.319" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/motor_chassis.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin xyz="0.0024 0 0" rpy="0 0 0.319" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/motor_chassis.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="${prefix}_motor_shaft">
+            <inertial>
+                <origin xyz="0 0 -0.01075" rpy="0 0 0" />
+                <mass value="0.004651202181185255" />
+                <inertia ixx="1.9e-07" iyy="1.9e-07" izz="0.25e-07" ixy="0.0" iyz="0.0" ixz="0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="-0.000128 -0.006999 -0.0215" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/motor_shaft.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin xyz="-0.000128 -0.006999 -0.0215" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/motor_shaft.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_shaft_joint" type="continuous">
+            <origin xyz="0.000128 0.006999 0.019" rpy="0 0 0" />
+            <parent link="${prefix}_motor_chassis" />
+            <child link="${prefix}_motor_shaft" />
+            <axis xyz="0.0 0.0 1.0" />
+        </joint>
+
+        <link name="${prefix}_coupler">
+            <inertial>
+                <origin xyz="-4.2028881321571695e-08 -0.000331924 -0.026254713547370766" rpy="0 0 0" />
+                <mass value="0.05134763321280873" />
+                <inertia ixx="3e-06" iyy="4e-06" izz="3e-06" ixy="0.0" iyz="-0.0" ixz="-0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/coupler.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/coupler.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_coupler_joint" type="fixed">
+            <origin xyz="0.0 0.0 0.025" rpy="0 0 0" />
+            <parent link="${prefix}_motor_shaft" />
+            <child link="${prefix}_coupler" />
+        </joint>
+
+        <link name="${prefix}_mecanum_wheel">
+            <inertial>
+                <origin xyz="8.87250126775198e-09 3.426297477759109e-08 0.0007191005329574657"
+                    rpy="0 0 0" />
+                <mass value="0.13184466520149532" />
+                <inertia ixx="0.000103" iyy="0.000103" izz="0.000179" ixy="0.0" iyz="0.0" ixz="-0.0" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find int_brain_description)/meshes/mecanum_wheel.stl"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="black" />
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="0.05" length="0.0375" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_wheel_joint" type="fixed">
+            <origin xyz="0.0 0.0 -0.005" rpy="0 0 0" />
+            <parent link="${prefix}_coupler" />
+            <child link="${prefix}_mecanum_wheel" />
+        </joint>
+    </xacro:macro>
+</robot>

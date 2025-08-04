@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<robot name="int_brain" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="controllers_yaml" default="" />
+  <xacro:arg name="sim" default="true" />
+
+  <xacro:include filename="$(find int_brain_description)/urdf/macros.xacro" />
+  <xacro:include filename="$(find int_brain_description)/urdf/materials.xacro" />
+
+  <xacro:if value="$(arg sim)">
+    <xacro:include filename="$(find int_brain_description)/urdf/gz.xacro" />
+    <xacro:include filename="$(find int_brain_description)/urdf/ros2_control_gz.xacro" />
+  </xacro:if>
+
+  <xacro:unless value="$(arg sim)">
+    <xacro:include filename="$(find int_brain_description)/urdf/ros2_control_hardware.xacro" />
+  </xacro:unless>
+
+  <link name="base_footprint" />
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.0014585384532783637 3.3995605252501064e-17 0.025758167060085994" rpy="0 0 0" />
+      <mass value="0.469" />
+      <inertia ixx="0.004037" iyy="0.008793" izz="0.010636" ixy="0.0" iyz="0.0" ixz="8.3e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find int_brain_description)/meshes/base_link.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+      <material name="black_acrylic" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find int_brain_description)/meshes/base_link.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="imu_link" />
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="imu_link" />
+    <origin xyz="0 0 0.061" rpy="3.1414 0 1.5707" />
+  </joint>
+
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <parent link="base_footprint" />
+    <child link="base_link" />
+    <origin xyz="0 0 0.061" rpy="0 0 0" />
+  </joint>
+
+  <xacro:motor_assembly_left prefix="front_left" parent_link="base_link">
+    <origin xyz="0.086 0.06 -0.021" rpy="-1.5707 0 0" />
+  </xacro:motor_assembly_left>
+
+  <xacro:motor_assembly_left prefix="rear_left" parent_link="base_link">
+    <origin xyz="-0.086 0.06 -0.021" rpy="-1.5707 0 0" />
+  </xacro:motor_assembly_left>
+
+  <xacro:motor_assembly_right prefix="front_right" parent_link="base_link">
+    <origin xyz="0.086 -0.06 -0.021" rpy="1.5707 3.1414 0" />
+  </xacro:motor_assembly_right>
+
+  <xacro:motor_assembly_right prefix="rear_right" parent_link="base_link">
+    <origin xyz="-0.086 -0.06 -0.021" rpy="1.5707 3.1414 0" />
+  </xacro:motor_assembly_right>
+
+</robot>
