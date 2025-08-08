@@ -1,5 +1,5 @@
 {
-    "name": "Integrated Brain Host PC Development Environment",
+    "name": "Integrated Brain SBC Development Environment",
     "dockerFile": "Dockerfile",
 
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src,type=bind",
