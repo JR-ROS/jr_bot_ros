@@ -1,0 +1,25 @@
+{
+    "name": "Integrated Brain Host PC Development Environment",
+    "dockerFile": "Dockerfile",
+
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src,type=bind",
+    "workspaceFolder": "/workspaces",
+
+    "privileged": true,
+
+    "containerEnv": {
+        "DISPLAY": "${localEnv:DISPLAY}"
+    },
+
+    "remoteUser": "ubuntu",
+
+    "runArgs": [
+        // "--device=/dev/int-brain-xxxxxxxxx",
+        "--net=host",
+        "--ipc=host",
+        "--name=intbrain-dev-img:harmonic"
+    ],
+    "postCreateCommand": "sudo chown -R ubuntu:ubuntu /workspaces && /workspaces/src/scripts/post_create.sh",
+    
+    "initializeCommand": "xhost +local:root"
+}

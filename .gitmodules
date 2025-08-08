@@ -1,0 +1,3 @@
+[submodule "dependencies/BotSpeak"]
+	path = dependencies/BotSpeak
+	url = https://github.com/eccentricOrange/BotSpeak.git
