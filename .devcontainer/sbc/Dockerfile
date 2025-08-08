@@ -1,9 +1,10 @@
-## config args
 ARG ROS_DISTRO=jazzy
-ARG USERNAME=ubuntu
 
 ## get base image
 FROM ros:$ROS_DISTRO-ros-base
+
+## config args
+ARG USERNAME=ubuntu
 
 ## make ubuntu a sudo user
 RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu \
@@ -64,7 +65,7 @@ RUN apt-get install --no-install-recommends -y \
 
 ## set default shell to bash 
 SHELL ["/bin/bash", "-c"]
-
+    
 ## set variables
 ENV ROS_DISTRO=$ROS_DISTRO
 ENV ROS_DOMAIN_ID=42
@@ -79,7 +80,6 @@ RUN echo "source $WORKSPACE/install/setup.bash" >> /root/.bashrc
 ## add to groups
 RUN usermod -aG dialout $USERNAME
 RUN usermod -aG i2c $USERNAME
-RUN usermod -aG gpio $USERNAME
 RUN usermod -aG video $USERNAME
 
 ## set username

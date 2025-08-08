@@ -8,7 +8,6 @@
     "privileged": true,
 
     "containerEnv": {
-        "DISPLAY": "${localEnv:DISPLAY}"
     },
 
     "remoteUser": "ubuntu",
@@ -17,9 +16,7 @@
         // "--device=/dev/int-brain-xxxxxxxxx",
         "--net=host",
         "--ipc=host",
-        "--name=intbrain-dev-img:harmonic"
+        "--name=intbrain-dev-img"
     ],
     "postCreateCommand": "sudo chown -R ubuntu:ubuntu /workspaces && /workspaces/src/scripts/post_create.sh",
-    
-    "initializeCommand": "xhost +local:root"
 }

@@ -1,9 +1,10 @@
-## config args
 ARG ROS_DISTRO=jazzy
-ARG USERNAME=ubuntu
 
 ## get base image
 FROM ros:$ROS_DISTRO-ros-base
+
+## config args
+ARG USERNAME=ubuntu
 
 ## make ubuntu a sudo user
 RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu \
