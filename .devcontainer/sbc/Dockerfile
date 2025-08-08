@@ -76,5 +76,11 @@ RUN mkdir -p /workspaces/src
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
 RUN echo "source $WORKSPACE/install/setup.bash" >> /root/.bashrc
 
+## add to groups
+RUN usermod -aG dialout $USERNAME
+RUN usermod -aG i2c $USERNAME
+RUN usermod -aG gpio $USERNAME
+RUN usermod -aG video $USERNAME
+
 ## set username
 USER $USERNAME
