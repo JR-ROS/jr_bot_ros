@@ -74,8 +74,8 @@ ENV ROS_DOMAIN_ID=42
 RUN mkdir -p /workspaces/src
 
 # convenience scripts
-RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /root/.bashrc
-RUN echo "source $WORKSPACE/install/setup.bash" >> /root/.bashrc
+RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/$USERNAME/.bashrc
+RUN echo "source /workspaces/install/setup.bash && echo \"Sourced workspace\"" >> /home/$USERNAME/.bashrc
 
 ## add to groups
 RUN usermod -aG dialout $USERNAME

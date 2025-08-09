@@ -1,5 +1,5 @@
 {
-    "name": "Integrated Brain Host PC Development Environment",
+    "name": "Host PC",
     "dockerFile": "Dockerfile",
 
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src,type=bind",
@@ -19,7 +19,7 @@
         "--ipc=host",
         "--name=intbrain-dev-img"
     ],
-    "postCreateCommand": "sudo chown -R ubuntu:ubuntu /workspaces && /workspaces/src/scripts/post_create.sh",
     
-    "initializeCommand": "xhost +local:root"
+    "initializeCommand": "xhost +local:root",
+    "postCreateCommand": "sudo chown -R ubuntu:ubuntu /workspaces && /workspaces/src/scripts/post_create.sh"
 }

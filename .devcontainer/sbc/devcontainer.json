@@ -1,14 +1,11 @@
 {
-    "name": "Integrated Brain SBC Development Environment",
+    "name": "SBC",
     "dockerFile": "Dockerfile",
 
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src,type=bind",
     "workspaceFolder": "/workspaces",
 
     "privileged": true,
-
-    "containerEnv": {
-    },
 
     "remoteUser": "ubuntu",
 
@@ -18,5 +15,6 @@
         "--ipc=host",
         "--name=intbrain-dev-img"
     ],
-    "postCreateCommand": "sudo chown -R ubuntu:ubuntu /workspaces && /workspaces/src/scripts/post_create.sh",
+
+    "postCreateCommand": "sudo chown -R ubuntu:ubuntu /workspaces && /workspaces/src/scripts/post_create.sh"
 }
