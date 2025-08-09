@@ -91,3 +91,7 @@ A couple of convenience functions are provided, implemented as aliases in `~/.ba
     ```bash
     cd /workspaces && colcon build --symlink-install && wss
     ```
+
+
+## Acknowledgements
+The Devcontainer system of this project was inspired by the Wheelchair project at [RRC, IIIT Hyderabad](https://github.com/Smart-Wheelchair-RRC/). Please see their project [DockerForDevelopment](https://github.com/Smart-Wheelchair-RRC/DockerForDevelopment).
