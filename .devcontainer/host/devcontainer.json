@@ -14,10 +14,10 @@
     "remoteUser": "ubuntu",
 
     "runArgs": [
-        // "--device=/dev/int-brain-xxxxxxxxx",     // UPDATE THIS WITH THE ACTUAL DEVICE NAME
         "--net=host",
         "--ipc=host",
-        "--name=intbrain-dev-img"
+        "--name=intbrain-dev-img",
+        "--volume=/dev:/dev"
     ],
     
     "initializeCommand": "xhost +local:root",

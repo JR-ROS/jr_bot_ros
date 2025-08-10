@@ -10,10 +10,10 @@
     "remoteUser": "ubuntu",
 
     "runArgs": [
-        // "--device=/dev/int-brain-xxxxxxxxx",     // UPDATE THIS WITH THE ACTUAL DEVICE NAME
         "--net=host",
         "--ipc=host",
-        "--name=intbrain-dev-img"
+        "--name=intbrain-dev-img",
+        "--volume=/dev:/dev"
     ],
 
     "postCreateCommand": "sudo chown -R ubuntu:ubuntu /workspaces && /workspaces/src/scripts/post_create.sh"

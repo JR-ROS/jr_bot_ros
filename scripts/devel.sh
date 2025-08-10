@@ -6,23 +6,12 @@ CONTAINER_NAME="intbrain_harmonic"
 
 
 # Running on the host machine with the robot connected
-# docker run -it -d \
-# --privileged \
-# --net=host \
-# --name $CONTAINER_NAME \
-# --volume $PWD/..:/workspaces/src \
-# --env="QT_X11_NO_MITSHM=1"  \           
-# --env="DISPLAY"  \
-# --device=/dev/int-brain-xxxxx \     # UPDATE THIS WITH THE ACTUAL DEVICE NAME
-# intbrain-dev-img:harmonic
-
-
-# Running on the host machine without the robot connected
 docker run -it -d \
 --privileged \
 --net=host \
 --name $CONTAINER_NAME \
 --volume $PWD/..:/workspaces/src \
+--volume /dev:/dev \
 --env="QT_X11_NO_MITSHM=1"  \           
 --env="DISPLAY"  \
 intbrain-dev-img:harmonic
@@ -33,13 +22,5 @@ intbrain-dev-img:harmonic
 # --net=host \
 # --name $CONTAINER_NAME \
 # --volume $PWD/..:/workspaces/src \
-# --device=/dev/int-brain-xxxxx \     # UPDATE THIS WITH THE ACTUAL DEVICE NAME
-# intbrain-dev-img:harmonic
-
-# Running on the remote machine without the robot connected
-# docker run -it -d \
-# --privileged \
-# --net=host \
-# --name $CONTAINER_NAME \
-# --volume $PWD/..:/workspaces/src \
+# --volume /dev:/dev \
 # intbrain-dev-img:harmonic
