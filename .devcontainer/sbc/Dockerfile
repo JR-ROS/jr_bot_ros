@@ -1,86 +1,17 @@
-ARG ROS_DISTRO=jazzy
+FROM ghcr.io/eccentricOrange/int_brain_sbc:dev0.1
 
-## get base image
-FROM ros:$ROS_DISTRO-ros-base
+WORKDIR $WORKSPACE
 
-## config args
-ARG USERNAME=ubuntu
+# Copy your source code into the container
+COPY ./src ./src
 
-## make ubuntu a sudo user
-RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu \
-    && chmod 0440 /etc/sudoers.d/ubuntu
+# Install ROS dependencies for your specific packages
+RUN source /opt/ros/humble/setup.bash && \
+rosdep install -i --from-path src -y --rosdistro humble
 
-## update system
-RUN apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get update -y
+# Build the ROS 2 workspace
+RUN source /opt/ros/humble/setup.bash && \
+colcon build --symlink-install
 
-## install basic tools
-RUN apt-get install --no-install-recommends -y \
-    vim \
-    bat \
-    python3-pip \
-    python3-venv \
-    net-tools \
-    tree
-
-## install hardware-specific packages
-RUN apt-get install --no-install-recommends -y \
-    python3-lgpio \
-    python3-gpiozero \
-    python3-smbus \
-    i2c-tools
-
-## install ROS packages
-# Install Gz sim - not needed for hardware
-# RUN apt-get install --no-install-recommends -y \
-#     ros-$ROS_DISTRO-ros-gz-sim \
-#     ros-$ROS_DISTRO-ros-gz-interfaces \
-#     ros-$ROS_DISTRO-ros-gz-bridge
-
-# Install ros2 control
-RUN apt-get install --no-install-recommends -y \
-    ros-$ROS_DISTRO-ros2-control \
-    ros-$ROS_DISTRO-ros2-controllers \
-    ros-$ROS_DISTRO-rqt-controller-manager \
-    ros-$ROS_DISTRO-gz-ros2-control
-
-# Install sensor fusion
-RUN apt-get install --no-install-recommends -y \
-    ros-$ROS_DISTRO-robot-localization
-
-# Install teleop packages
-RUN apt-get install --no-install-recommends -y \
-    ros-$ROS_DISTRO-teleop-twist-joy \
-    ros-$ROS_DISTRO-teleop-twist-keyboard \
-    ros-$ROS_DISTRO-joy
-
-# Install plotjuggler
-RUN apt-get install --no-install-recommends -y \
-    ros-$ROS_DISTRO-rviz2 \
-    ros-$ROS_DISTRO-rviz-imu-plugin \
-    ros-$ROS_DISTRO-xacro \
-    ros-$ROS_DISTRO-joint-state-publisher-gui \
-    ros-$ROS_DISTRO-plotjuggler-ros
-
-## set default shell to bash 
-SHELL ["/bin/bash", "-c"]
-    
-## set variables
-ENV ROS_DISTRO=$ROS_DISTRO
-ENV ROS_DOMAIN_ID=42
-
-## create workspace
-RUN mkdir -p /workspaces/src
-
-# convenience scripts
-RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/$USERNAME/.bashrc
-RUN echo "source /workspaces/install/setup.bash && echo \"Sourced workspace\"" >> /home/$USERNAME/.bashrc
-
-## add to groups
-RUN usermod -aG dialout $USERNAME
-RUN usermod -aG i2c $USERNAME
-RUN usermod -aG video $USERNAME
-
-## set username
-USER $USERNAME
+# Set up the entrypoint to source the workspace and open a shell
+CMD ["bash", "-c", "source /ros2_ws/install/setup.bash && bash"]
