@@ -1,6 +1,6 @@
 {
-    "name": "Host PC",
-    "image": "ghcr.io/eccentricorange/int_brain_host:aarch64-dev0.5",
+    "name": "SBC",
+    "image": "ghcr.io/eccentricorange/int_brain_sbc:aarch64-dev0.5",
 
     "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/int_brain_ws,type=bind",
     "workspaceFolder": "/home/ubuntu/int_brain_ws",
@@ -16,5 +16,6 @@
         "--volume=/dev:/dev"
     ],
     
+    "initializeCommand": "git submodule update --init --recursive --remote",
     "postCreateCommand": "sudo chown -R ubuntu:ubuntu $WORKSPACE && $WORKSPACE/config/scripts/post_create.sh"
 }

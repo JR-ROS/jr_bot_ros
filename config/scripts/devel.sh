@@ -26,7 +26,8 @@ if [ "$TARGET" == "host" ]; then
     --volume /dev:/dev \
     --env="DISPLAY"  \
     --env="QT_X11_NO_MITSHM=1"  \
-    ghcr.io/eccentricorange/int_brain_host:amd64-dev0.4
+    --env "TERM=xterm-256color" \
+    ghcr.io/eccentricorange/int_brain_host:amd64-dev0.5
 
 elif [ "$TARGET" == "sbc" ]; then
 
@@ -36,7 +37,8 @@ elif [ "$TARGET" == "sbc" ]; then
     --name $CONTAINER_NAME \
     --volume $PWD/..:$CONTAINER_WORKSPACE \
     --volume /dev:/dev \
-    ghcr.io/eccentricOrange/int_brain_sbc:aarch64-dev0.4
+    --env "TERM=xterm-256color" \
+    ghcr.io/eccentricOrange/int_brain_sbc:aarch64-dev0.5
 
 else
     echo "Invalid target: $TARGET"  
