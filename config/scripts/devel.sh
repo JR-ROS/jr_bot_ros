@@ -45,3 +45,7 @@ else
     echo "Available targets: host, sbc"
     exit 1
 fi
+
+docker exec -it \
+$CONTAINER_NAME \
+$CONTAINER_WORKSPACE/config/scripts/post_create.sh
