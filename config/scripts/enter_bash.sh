@@ -18,7 +18,7 @@ if [ "$TARGET" == "host" ]; then
     --env="DISPLAY"  \
     --env="QT_X11_NO_MITSHM=1"  \
     --workdir="$WORKSPACE" \
-    $CONTAINER_NAME /bin/bash
+    $CONTAINER_NAME bash
 
 elif [ "$TARGET" == "sbc" ]; then
 

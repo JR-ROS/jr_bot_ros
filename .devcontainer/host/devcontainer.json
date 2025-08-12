@@ -2,7 +2,7 @@
     "name": "Host PC",
     "image": "ghcr.io/eccentricorange/int_brain_host:amd64-dev0.5",
 
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/int_brain_ws,type=bind",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/int_brain_ws/src,type=bind",
     "workspaceFolder": "/home/ubuntu/int_brain_ws",
 
     "privileged": true,
@@ -21,5 +21,5 @@
     ],
     
     "initializeCommand": "git submodule update --init --recursive --remote && xhost +local:root",
-    "postCreateCommand": "$WORKSPACE/config/scripts/post_create.sh"
+    "postCreateCommand": "$WORKSPACE/src/config/scripts/post_create.sh"
 }

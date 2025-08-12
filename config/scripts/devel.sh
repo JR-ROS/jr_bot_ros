@@ -19,25 +19,25 @@ git submodule update --init --recursive --remote
 if [ "$TARGET" == "host" ]; then
 
     docker run -it -d \
-    --privileged \
     --net=host \
     --name $CONTAINER_NAME \
-    --volume $PWD/..:$CONTAINER_WORKSPACE \
+    --volume $PWD/../..:$CONTAINER_WORKSPACE/src \
     --volume /dev:/dev \
     --env="DISPLAY"  \
     --env="QT_X11_NO_MITSHM=1"  \
     --env "TERM=xterm-256color" \
+    --user $(id -u):$(id -g) \
     ghcr.io/eccentricorange/int_brain_host:amd64-dev0.5
 
 elif [ "$TARGET" == "sbc" ]; then
 
     docker run -it -d \
-    --privileged \
     --net=host \
     --name $CONTAINER_NAME \
-    --volume $PWD/..:$CONTAINER_WORKSPACE \
+    --volume $PWD/../..:$CONTAINER_WORKSPACE/src \
     --volume /dev:/dev \
     --env "TERM=xterm-256color" \
+    --user ubuntu \
     ghcr.io/eccentricorange/int_brain_sbc:aarch64-dev0.5
 
 else
@@ -48,4 +48,4 @@ fi
 
 docker exec -it \
 $CONTAINER_NAME \
-$CONTAINER_WORKSPACE/config/scripts/post_create.sh
+$CONTAINER_WORKSPACE/src/config/scripts/post_create.sh
