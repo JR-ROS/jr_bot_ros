@@ -38,7 +38,7 @@ elif [ "$TARGET" == "sbc" ]; then
     --volume $PWD/..:$CONTAINER_WORKSPACE \
     --volume /dev:/dev \
     --env "TERM=xterm-256color" \
-    ghcr.io/eccentricOrange/int_brain_sbc:aarch64-dev0.5
+    ghcr.io/eccentricorange/int_brain_sbc:aarch64-dev0.5
 
 else
     echo "Invalid target: $TARGET"  
