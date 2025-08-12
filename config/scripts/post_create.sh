@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# take ownership of folders
+sudo chown -R ubuntu:ubuntu $WORKSPACE
+
 # source global ROS environment
 source /opt/ros/$ROS_DISTRO/setup.bash
 

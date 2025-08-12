@@ -17,5 +17,5 @@
     ],
     
     "initializeCommand": "git submodule update --init --recursive --remote",
-    "postCreateCommand": "sudo chown -R ubuntu:ubuntu $WORKSPACE && $WORKSPACE/config/scripts/post_create.sh"
+    "postCreateCommand": "$WORKSPACE/config/scripts/post_create.sh"
 }
