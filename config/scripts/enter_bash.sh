@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CONTAINER_NAME="intbrain_harmonic"
+CONTAINER_NAME="int_brain_dev"
+WORKSPACE=/home/ubuntu/int_brain_ws
 TARGET=$1
 
 if [ -z "$TARGET" ]; then
@@ -16,15 +17,13 @@ if [ "$TARGET" == "host" ]; then
     docker exec -it \
     --env="DISPLAY"  \
     --env="QT_X11_NO_MITSHM=1"  \
-    --user="ubuntu" \
-    --workdir="/workspaces" \
-    $CONTAINER_NAME bash
+    --workdir="$WORKSPACE" \
+    $CONTAINER_NAME /bin/bash
 
 elif [ "$TARGET" == "sbc" ]; then
 
     docker exec -it \
-    --user="ubuntu" \
-    --workdir="/workspaces" \
+    --workdir="$WORKSPACE" \
     $CONTAINER_NAME bash
 
 else

@@ -1,9 +1,9 @@
 {
-    "name": "SBC",
-    "dockerFile": "Dockerfile",
+    "name": "Host PC",
+    "image": "ghcr.io/eccentricorange/int_brain_host:aarch64-dev0.5",
 
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/src,type=bind",
-    "workspaceFolder": "/workspaces",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/int_brain_ws,type=bind",
+    "workspaceFolder": "/home/ubuntu/int_brain_ws",
 
     "privileged": true,
 
@@ -12,9 +12,9 @@
     "runArgs": [
         "--net=host",
         "--ipc=host",
-        "--name=intbrain-dev-img",
+        "--name=int_brain_dev",
         "--volume=/dev:/dev"
     ],
-
-    "postCreateCommand": "sudo chown -R ubuntu:ubuntu /workspaces && /workspaces/src/scripts/post_create.sh"
+    
+    "postCreateCommand": "sudo chown -R ubuntu:ubuntu $WORKSPACE && $WORKSPACE/config/scripts/post_create.sh"
 }
