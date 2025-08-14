@@ -12,7 +12,6 @@
     "runArgs": [
         "--net=host",
         "--ipc=host",
-        "--name=int_brain_dev",
         "--volume=/dev:/dev"
     ],
     

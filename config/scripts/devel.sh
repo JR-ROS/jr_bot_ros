@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CONTAINER_WORKSPACE=/home/ubuntu/int_brain_ws
-CONTAINER_NAME="int_brain_dev"
+CONTAINER_NAME="int_brain_container"
 TARGET=$1
 
 if [ -z "$TARGET" ]; then

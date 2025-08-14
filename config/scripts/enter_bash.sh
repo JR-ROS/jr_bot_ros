@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_NAME="int_brain_dev"
+CONTAINER_NAME="int_brain_container"
 WORKSPACE=/home/ubuntu/int_brain_ws
 TARGET=$1
 
