@@ -4,6 +4,8 @@ These steps give you reliable, non-root access to your Integrated Brain ("int-br
 
 ## Setup Steps
 
+Run these steps from the root of the repository.
+
 1. **Copy the udev rule**
    ```sh
    sudo cp config/udev/99-int-brain.rules /etc/udev/rules.d/
