@@ -1,31 +1,13 @@
 # Integrated Brain ROS Workspace
 
-## Quickstart guide for running Docker containers manually
-
-1.  Pull the base image and build the container.
-
-    ```bash
-    ./config/scripts/devel.sh TARGET
-    ```
-
-    Replace `TARGET` with the desired target (`sbc` or `host`).
+This is the workspace of our awesome project!
 
 
-2.  Enter the container.
+## Getting started
+The documentation for managing the workspace is split into various READMEs, please read the correct file using the (relative) links below.
 
-    ```bash
-    ./config/scripts/enter.sh TARGET
-    ```
-
-    Replace `TARGET` with the desired target (`sbc` or `host`).
-
-
-3.  When you are done, stop the container.
-
-    ```bash
-    ./config/scripts/stop.sh
-    ```
-
-## Quickstart guide for running Docker containers manually
-
-If the editor prompts you to "Reopen in Container", simply do so. When prompted, choose between "SBC" or "Host".
+| File | Purpose |
+| --- | --- |
+| [Setup Scripts](/config/scripts/README.md) | Instructions and shell scripts to help quickly launch the workspace without dependence on Devcontainers. |
+| [Udev Rules](/config/udev/README.md) | Configure `udev` rules in the host OS to easily recognise the robot if plugged in via USB. |
+| [Containerization Source Code](https://github.com/eccentricOrange/int-brain-containers/) \[hosted externally\] | Source code for the Dockerfiles for to building the containers used by this project. |
