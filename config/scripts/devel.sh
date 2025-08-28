@@ -14,7 +14,7 @@ fi
 
 # get Git submodules
 cd ../../src && \
-git submodule update --init --recursive --remote
+git submodule update --init --recursive
 
 if [ "$TARGET" == "host" ]; then
 

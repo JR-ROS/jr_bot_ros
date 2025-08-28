@@ -19,6 +19,6 @@
         "--volume=/dev:/dev"
     ],
     
-    "initializeCommand": "git submodule update --init --recursive --remote && xhost +local:root",
+    "initializeCommand": "git submodule update --init --recursive && xhost +local:root",
     "postCreateCommand": "$WORKSPACE/src/config/scripts/post_create.sh"
 }
