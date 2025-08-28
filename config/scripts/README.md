@@ -55,7 +55,7 @@ A couple of convenience functions are provided, implemented as aliases in `~/.ba
     It is equivalent to running the following command:
 
     ```bash
-    source /workspaces/install/setup.bash && echo "Sourced workspace"
+    source $WORKSPACE/install/setup.bash && echo "Sourced workspace"
     ```
 
 -   **`wsb` Build Workspace**
@@ -65,5 +65,5 @@ A couple of convenience functions are provided, implemented as aliases in `~/.ba
     It is equivalent to running the following command:
 
     ```bash
-    cd /workspaces && colcon build --symlink-install && wss
+    cd $WORKSPACE && colcon build --symlink-install && wss
     ```
