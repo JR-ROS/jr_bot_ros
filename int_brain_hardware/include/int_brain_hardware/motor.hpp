@@ -8,26 +8,40 @@ class Motor
 {
 public:
     std::string name_;
-    int enc_;
+    int64_t enc_;
     double pos_;
     double vel_;
+    float kp_;
+    float ki_;
+    float kd_;
+    float kd_filter_coeff_;     // Derivative Filter Coefficient
+    float ff_param_[2];         // Feedforward parameters
+    double rpm_desired_;        // In rad/s
     double current_;
-    double min_effort_, max_effort_;
 
     Motor() = default;
 
-    Motor(const std::string name)
-        : name_(name),  enc_(0.0), pos_(0.0), vel_(0.0),
-          current_(0.0) {}
-
-    void setup(const std::string &name)
+    void setup(const std::string &name, float kp, float ki, float kd, float kd_filter_coeff, float ff0, float ff1)
     {
         name_ = name;
+        kp_ = kp;
+        ki_ = ki;
+        kd_ = kd;
+        kd_filter_coeff_ = kd_filter_coeff;
+        ff_param_[0] = ff0;
+        ff_param_[1] = ff1;
+        
+        enc_ = 0.0;
+        pos_ = 0.0;
+        vel_ = 0.0;
+        rpm_desired_ = 0.0;
+        current_ = 0.0;
     }
 
-    double calc_enc_pos(double range = 0.025) const
+    void set_encoder(int64_t enc)
     {
-        return (range * enc_ / 4095) - range / 2;
+        enc_ = enc;
+        pos_ = 2 * M_PI * ((enc % 1320) / 1320.0);
     }
 
     void reset_state()

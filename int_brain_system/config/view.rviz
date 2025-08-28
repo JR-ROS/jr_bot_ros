@@ -5,10 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /Status1
         - /TF1/Frames1
-        - /RobotModel1
-        - /Imu1
         - /Imu1/Axes properties1
       Splitter Ratio: 0.5
     Tree Height: 627
@@ -80,6 +77,10 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: true
+        odom:
+          Value: true
+        pcb_link:
+          Value: true
         rear_left_coupler:
           Value: true
         rear_left_mecanum_wheel:
@@ -102,30 +103,32 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          base_link:
-            front_left_motor_chassis:
-              front_left_motor_shaft:
-                front_left_coupler:
-                  front_left_mecanum_wheel:
-                    {}
-            front_right_motor_chassis:
-              front_right_motor_shaft:
-                front_right_coupler:
-                  front_right_mecanum_wheel:
-                    {}
-            imu_link:
-              {}
-            rear_left_motor_chassis:
-              rear_left_motor_shaft:
-                rear_left_coupler:
-                  rear_left_mecanum_wheel:
-                    {}
-            rear_right_motor_chassis:
-              rear_right_motor_shaft:
-                rear_right_coupler:
-                  rear_right_mecanum_wheel:
-                    {}
+        odom:
+          base_footprint:
+            base_link:
+              front_left_motor_chassis:
+                front_left_motor_shaft:
+                  front_left_coupler:
+                    front_left_mecanum_wheel:
+                      {}
+              front_right_motor_chassis:
+                front_right_motor_shaft:
+                  front_right_coupler:
+                    front_right_mecanum_wheel:
+                      {}
+              pcb_link:
+                imu_link:
+                  {}
+              rear_left_motor_chassis:
+                rear_left_motor_shaft:
+                  rear_left_coupler:
+                    rear_left_mecanum_wheel:
+                      {}
+              rear_right_motor_chassis:
+                rear_right_motor_shaft:
+                  rear_right_coupler:
+                    rear_right_mecanum_wheel:
+                      {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -199,6 +202,11 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        pcb_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         rear_left_coupler:
           Alpha: 1
           Show Axes: false
@@ -247,6 +255,64 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz_default_plugins/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 1000
+      Name: Odometry
+      Position Tolerance: 0.10000000149011612
+      Shape:
+        Alpha: 0.4000000059604645
+        Axes Length: 1
+        Axes Radius: 0.10000000149011612
+        Color: 255; 25; 0
+        Head Length: 0.019999999552965164
+        Head Radius: 0.019999999552965164
+        Shaft Length: 0.10000000149011612
+        Shaft Radius: 0.009999999776482582
+        Value: Arrow
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /odometry/filtered
+      Value: true
+    - Alpha: 1
+      Angular Arrow Scale: 2
+      Angular Color: 204; 204; 51
+      Arrow Width: 0.5
+      Class: rviz_default_plugins/TwistStamped
+      Enabled: true
+      Hide Small Values: true
+      History Length: 1
+      Linear Arrow Scale: 2
+      Linear Color: 204; 51; 51
+      Name: TwistStamped
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /cmd_vel_raw
+      Value: true
     - Acceleration properties:
         Acc. vector alpha: 1
         Acc. vector color: 255; 0; 0
@@ -254,7 +320,7 @@ Visualization Manager:
         Derotate acceleration: true
         Enable acceleration: false
       Axes properties:
-        Axes scale: 0.10000000149011612
+        Axes scale: 0.20000000298023224
         Enable axes: true
       Box properties:
         Box alpha: 1
@@ -278,7 +344,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_footprint
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -321,25 +387,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 0.7681893110275269
+      Distance: 1.6455135345458984
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 9.804440196603537e-06
-        Y: -0.00025453208945691586
-        Z: 0.0025670193135738373
-      Focal Shape Fixed Size: true
+        X: -0.005404781550168991
+        Y: 0.005504034459590912
+        Z: 0.016201119869947433
+      Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.49520283937454224
-      Target Frame: <Fixed Frame>
+      Pitch: 0.8453978300094604
+      Target Frame: base_link
       Value: Orbit (rviz_default_plugins)
-      Yaw: 2.7423670291900635
+      Yaw: 3.1703999042510986
     Saved: ~
 Window Geometry:
   Displays:
