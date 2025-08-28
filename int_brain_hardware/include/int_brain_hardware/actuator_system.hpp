@@ -21,6 +21,8 @@
 #include "int_brain_hardware/battery.hpp"
 #include "int_brain_hardware/imu.hpp"
 
+#include "int_brain_messages.h"
+
 namespace int_brain_hardware
 {
   class IntBrainHardware : public hardware_interface::SystemInterface
@@ -29,9 +31,31 @@ namespace int_brain_hardware
     struct Config
     {
       std::string device_addr = "";
-      float loop_rate = 0.0;
-      int baud_rate = 0;
       int timeout_ms = 0;
+      bool is_feedforward_ = false;
+
+      // IMU settings
+      bool imu_usage = false;
+      bool imu_sensor_fusion = false;
+      uint32_t imu_sensor_fusion_frequency = 0;
+
+      // Encoder settings
+      bool encoder_usage = false;
+      bool encoder_velocity_calculation = false;
+      uint32_t encoder_velocity_calculation_frequency = 0;
+      uint32_t encoder_cpr = 0;
+
+      // Motor current measurement settings
+      bool motor_current_meas_on_off = false;
+      uint32_t motor_current_meas_frequency = 0;
+
+      // Battery voltage measurement settings
+      bool battery_voltage_meas_on_off = false;
+      uint32_t battery_voltage_meas_rate = 0;
+
+      // Motor closed loop control settings
+      MotorControllerMode_TypeDef motor_control_mode = PID_FEED_FORWARD;
+      uint32_t motor_controller_frequency = 0;
     };
 
   public:
