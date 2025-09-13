@@ -10,10 +10,9 @@ if [ -z "$TARGET" ]; then
     exit 1
 fi
 
-./stop.sh
+config/scripts/stop.sh
 
 # get Git submodules
-cd ../../src && \
 git submodule update --init --recursive
 
 if [ "$TARGET" == "host" ]; then
@@ -21,7 +20,7 @@ if [ "$TARGET" == "host" ]; then
     docker run -it -d \
     --net=host \
     --name $CONTAINER_NAME \
-    --volume $PWD/../..:$CONTAINER_WORKSPACE/src \
+    --volume $PWD:$CONTAINER_WORKSPACE/src \
     --volume /dev:/dev \
     --env="DISPLAY"  \
     --env="QT_X11_NO_MITSHM=1"  \
@@ -34,7 +33,7 @@ elif [ "$TARGET" == "sbc" ]; then
     docker run -it -d \
     --net=host \
     --name $CONTAINER_NAME \
-    --volume $PWD/../..:$CONTAINER_WORKSPACE/src \
+    --volume $PWD:$CONTAINER_WORKSPACE/src \
     --volume /dev:/dev \
     --env "TERM=xterm-256color" \
     --user ubuntu \
