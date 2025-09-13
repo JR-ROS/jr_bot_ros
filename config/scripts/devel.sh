@@ -20,6 +20,7 @@ if [ "$TARGET" == "host" ]; then
     docker run -it -d \
     --net=host \
     --name $CONTAINER_NAME \
+    --privileged \
     --volume $PWD:$CONTAINER_WORKSPACE/src \
     --volume /dev:/dev \
     --env="DISPLAY"  \
@@ -33,6 +34,7 @@ elif [ "$TARGET" == "sbc" ]; then
     docker run -it -d \
     --net=host \
     --name $CONTAINER_NAME \
+    --privileged \
     --volume $PWD:$CONTAINER_WORKSPACE/src \
     --volume /dev:/dev \
     --env "TERM=xterm-256color" \

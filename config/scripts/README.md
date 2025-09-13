@@ -2,6 +2,8 @@
 
 The Docker environments used in this repository are hosted and built separately. Please see the documentation at their repository: https://github.com/eccentricOrange/int-brain-containers/
 
+The scripts should be run from the root of the repository.
+
 ## Quickstart guide for running Docker containers manually
 
 1.  Pull the base image and build the container.
