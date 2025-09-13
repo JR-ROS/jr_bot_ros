@@ -16,7 +16,7 @@ The Docker environments used in this repository are hosted and built separately.
 2.  Enter the container.
 
     ```bash
-    ./config/scripts/enter.sh TARGET
+    ./config/scripts/enter_bash.sh TARGET
     ```
 
     Replace `TARGET` with the desired target (`sbc` or `host`).
