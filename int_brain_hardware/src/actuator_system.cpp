@@ -427,22 +427,29 @@ namespace int_brain_hardware
 
     // Read IMU data
     std::vector<float> imu_data;
-    if (comms_.req_data(REQUEST_IMU_RAW, imu_data) != 0)
+    if (comms_.req_data(REQUEST_IMU_ACCEL_RAW, imu_data) != 0)
     {
-      RCLCPP_ERROR(rclcpp::get_logger("IntBrainHardware"), "Failed to read IMU data");
+      RCLCPP_ERROR(rclcpp::get_logger("IntBrainHardware"), "Failed to read IMU data: ACCEL");
       return hardware_interface::return_type::ERROR;
     }
     imu_.linear_acceleration_[0] = imu_data[0];
     imu_.linear_acceleration_[1] = imu_data[1];
     imu_.linear_acceleration_[2] = imu_data[2];
-    imu_.angular_velocity_[0] = imu_data[3];
-    imu_.angular_velocity_[1] = imu_data[4];
-    imu_.angular_velocity_[2] = imu_data[5];
+
+    imu_data.clear();
+    if (comms_.req_data(REQUEST_IMU_GYRO_RAW, imu_data) != 0)
+    {
+      RCLCPP_ERROR(rclcpp::get_logger("IntBrainHardware"), "Failed to read IMU data: GYRO");
+      return hardware_interface::return_type::ERROR;
+    }
+    imu_.angular_velocity_[0] = imu_data[0];
+    imu_.angular_velocity_[1] = imu_data[1];
+    imu_.angular_velocity_[2] = imu_data[2];
 
     imu_data.clear();
     if (comms_.req_data(REQUEST_IMU_PROCESSED, imu_data) != 0)
     {
-      RCLCPP_ERROR(rclcpp::get_logger("IntBrainHardware"), "Failed to read IMU data");
+      RCLCPP_ERROR(rclcpp::get_logger("IntBrainHardware"), "Failed to read IMU data: ORIENTATION");
       return hardware_interface::return_type::ERROR;
     }
     imu_.orientation_[0] = imu_data[0];
