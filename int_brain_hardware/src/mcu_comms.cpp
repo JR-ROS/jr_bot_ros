@@ -52,8 +52,8 @@ int MCUComms::req_data(uint8_t request_id, std::vector<T>& pcbData) {
     uint8_t responseBuffer[256];
     static uint8_t unpacked_frame_buffer[MCU_USB_COMM_PAYLOAD_SIZE];
 
-    uint8_t dataLength;
-    uint8_t numberElements;
+    uint32_t dataLength;
+    uint32_t numberElements;
 
     std::size_t bytesToRead;
 
@@ -144,7 +144,7 @@ int MCUComms::req_data(uint8_t request_id, std::vector<T>& pcbData) {
         // now we pass this onto the caller
         pcbData.clear();
 
-        for (uint8_t i = 0; i < numberElements; ++i) {
+        for (uint32_t i = 0; i < numberElements; ++i) {
             pcbData.push_back(static_cast<T>(readData[i]));
         }
     }
@@ -165,8 +165,8 @@ int MCUComms::send_data(uint8_t command_id, const std::vector<T>& data) {
     T* trasmitBuffer = new T[data.size()];
     std::copy(data.begin(), data.end(), trasmitBuffer);
 
-    uint8_t dataLength;
-    uint8_t frameLength;
+    uint32_t dataLength;
+    uint32_t frameLength;
     uint8_t serializedDataBuffer[256];
     uint8_t frameBuffer[256];
 
@@ -196,8 +196,8 @@ int MCUComms::send_config(uint8_t command_id, const std::vector<T>& data) {
     T* trasmitBuffer = new T[data.size()];
     std::copy(data.begin(), data.end(), trasmitBuffer);
 
-    uint8_t dataLength;
-    uint8_t frameLength;
+    uint32_t dataLength;
+    uint32_t frameLength;
     uint8_t serializedDataBuffer[256];
     uint8_t frameBuffer[256];
 
