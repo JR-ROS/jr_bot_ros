@@ -29,25 +29,27 @@ hardware_interface::CallbackReturn JrBotHardware::on_init(
     // Initialize the 2 differential drive motors
     int index = 0;
     for (const hardware_interface::ComponentInfo& joint : info_.joints) {
-        const auto command_interface = joint.command_interfaces[0];
+        if (joint.name == "left_wheel_joint" || joint.name == "right_wheel_joint") {
+            const auto command_interface = joint.command_interfaces[0];
 
-        if (command_interface.name != hardware_interface::HW_IF_VELOCITY) {
-            RCLCPP_FATAL(
-                rclcpp::get_logger("JrBotHardware"),
-                "Joint '%s' has '%s' command interface. '%s' expected.",
-                joint.name.c_str(), command_interface.name.c_str(),
-                hardware_interface::HW_IF_VELOCITY);
-            return hardware_interface::CallbackReturn::ERROR;
+            if (command_interface.name != hardware_interface::HW_IF_VELOCITY) {
+                RCLCPP_FATAL(
+                    rclcpp::get_logger("JrBotHardware"),
+                    "Joint '%s' has '%s' command interface. '%s' expected.",
+                    joint.name.c_str(), command_interface.name.c_str(),
+                    hardware_interface::HW_IF_VELOCITY);
+                return hardware_interface::CallbackReturn::ERROR;
+            }
+
+            // Fetch the motor's max RPM from the URDF to calculate PWM scaling
+            double max_rpm = std::stod(joint.parameters.at("max_rpm"));
+            
+            motors[index++].setup(joint.name, max_rpm);
+            
+            RCLCPP_INFO(rclcpp::get_logger("JrBotHardware"),
+                        "Motor '%s' initialized with max_rpm: %f",
+                        joint.name.c_str(), max_rpm);
         }
-
-        // Fetch the motor's max RPM from the URDF to calculate PWM scaling
-        double max_rpm = std::stod(joint.parameters.at("max_rpm"));
-        
-        motors[index++].setup(joint.name, max_rpm);
-        
-        RCLCPP_INFO(rclcpp::get_logger("JrBotHardware"),
-                    "Motor '%s' initialized with max_rpm: %f",
-                    joint.name.c_str(), max_rpm);
     }
 
     return hardware_interface::CallbackReturn::SUCCESS;

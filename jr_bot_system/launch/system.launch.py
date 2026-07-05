@@ -108,6 +108,12 @@ def generate_launch_description():
         ]
     )
 
+    tof_scan_node = Node(
+        package="jr_bot_system",
+        executable="tof_scan_publisher",
+        output="screen"
+    )
+
     return LaunchDescription([
         rviz_arg,
         debug_arg,
@@ -120,5 +126,6 @@ def generate_launch_description():
         twist_stamper,
         robot_localization,
         rviz_node,
-        madgwick_filter_node
+        madgwick_filter_node,
+        tof_scan_node,
     ])
