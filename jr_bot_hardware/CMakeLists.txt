@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(int_brain_hardware)
+project(jr_bot_hardware)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -18,39 +18,37 @@ foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
 
-include_directories(
-  include
-)
+include_directories(include)
 
 ## COMPILE
 add_library(
-  int_brain_hardware
+  ${PROJECT_NAME}
   SHARED
   src/actuator_system.cpp
   src/mcu_comms.cpp
   src/motor.cpp
 )
-target_compile_features(int_brain_hardware PUBLIC cxx_std_20)
-target_include_directories(int_brain_hardware PUBLIC
-$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
-$<INSTALL_INTERFACE:include/int_brain_hardware>
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 ament_target_dependencies(
-  int_brain_hardware PUBLIC
+  ${PROJECT_NAME} PUBLIC
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
 
-target_link_libraries(int_brain_hardware PUBLIC botspeak serial)
+target_link_libraries(${PROJECT_NAME} PUBLIC botspeak serial)
 
 # Export hardware plugins
-pluginlib_export_plugin_description_file(hardware_interface int_brain_hardware.xml) 
+pluginlib_export_plugin_description_file(hardware_interface jr_bot_hardware.xml) 
 
 install(DIRECTORY include/
   DESTINATION include
 )
 
-install(TARGETS int_brain_hardware
-  EXPORT export_int_brain_hardware
+install(TARGETS ${PROJECT_NAME}
+  EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -63,6 +61,6 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_export_targets(export_int_brain_hardware HAS_LIBRARY_TARGET)
+ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
 ament_package()

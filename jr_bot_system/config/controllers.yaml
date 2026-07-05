@@ -1,0 +1,40 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50 # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    imu_sensor_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
+
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
+
+imu_sensor_broadcaster:
+  ros__parameters:
+    sensor_name: imu_sensor
+    frame_id: imu_link
+
+diff_drive_controller:
+  ros__parameters:
+    left_wheel_names: ["left_wheel_joint"]
+    right_wheel_names: ["right_wheel_joint"]
+
+    wheel_separation: 0.16
+    wheel_radius: 0.04
+
+    wheel_separation_multiplier: 1.0
+    left_wheel_radius_multiplier: 1.0
+    right_wheel_radius_multiplier: 1.0
+
+    odom_frame_id: odom
+    base_frame_id: base_footprint
+
+    # Since we are using fake open-loop odometry on the ESP32, 
+    # we tell the controller to use position feedback
+    position_feedback: true
+    open_loop: false
+    enable_odom_tf: true
+
+    cmd_vel_timeout: 0.5

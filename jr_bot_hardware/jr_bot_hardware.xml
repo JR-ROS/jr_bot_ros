@@ -1,0 +1,7 @@
+<library path="jr_bot_hardware">
+  <class name="jr_bot_hardware/JrBotHardware" type="jr_bot_hardware::JrBotHardware" base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ROS 2 hardware interface for the educational Jr Bot platform using ESP32 and brushed DC motors.
+    </description>
+  </class>
+</library>

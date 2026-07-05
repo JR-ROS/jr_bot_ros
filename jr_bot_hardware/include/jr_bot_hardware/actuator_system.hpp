@@ -1,5 +1,5 @@
-#ifndef int_brain_hardware__ACTUATOR_SYSTEM_HPP_
-#define int_brain_hardware__ACTUATOR_SYSTEM_HPP_
+#ifndef JR_BOT_HARDWARE__ACTUATOR_SYSTEM_HPP_
+#define JR_BOT_HARDWARE__ACTUATOR_SYSTEM_HPP_
 
 #include <memory>
 #include <string>
@@ -9,11 +9,10 @@
 #include "hardware_interface/hardware_info.hpp"
 #include "hardware_interface/system_interface.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
-#include "int_brain_hardware/mcu_comms.hpp"
-#include "int_brain_hardware/battery.hpp"
-#include "int_brain_hardware/imu.hpp"
-#include "int_brain_hardware/motor.hpp"
-#include "int_brain_messages.h"
+#include "jr_bot_hardware/mcu_comms.hpp"
+#include "jr_bot_hardware/imu.hpp"
+#include "jr_bot_hardware/motor.hpp"
+#include "jr_bot_messages.hpp"
 #include "rclcpp/clock.hpp"
 #include "rclcpp/duration.hpp"
 #include "rclcpp/macros.hpp"
@@ -21,39 +20,15 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-namespace int_brain_hardware {
-class IntBrainHardware : public hardware_interface::SystemInterface {
+namespace jr_bot_hardware {
+class JrBotHardware : public hardware_interface::SystemInterface {
     struct Config {
         std::string device_addr = "";
         int timeout_ms = 0;
-        bool is_feedforward_ = false;
-
-        // IMU settings
-        bool imu_usage = false;
-        bool imu_sensor_fusion = false;
-        uint32_t imu_sensor_fusion_frequency = 0;
-
-        // Encoder settings
-        bool encoder_usage = false;
-        bool encoder_velocity_calculation = false;
-        uint32_t encoder_velocity_calculation_frequency = 0;
-        uint32_t encoder_cpr = 0;
-
-        // Motor current measurement settings
-        bool motor_current_meas_on_off = false;
-        uint32_t motor_current_meas_frequency = 0;
-
-        // Battery voltage measurement settings
-        bool battery_voltage_meas_on_off = false;
-        uint32_t battery_voltage_meas_rate = 0;
-
-        // Motor closed loop control settings
-        MotorControllerMode_TypeDef motor_control_mode = PID_FEED_FORWARD;
-        uint32_t motor_controller_frequency = 0;
     };
 
    public:
-    RCLCPP_SHARED_PTR_DEFINITIONS(IntBrainHardware)
+    RCLCPP_SHARED_PTR_DEFINITIONS(JrBotHardware)
 
     hardware_interface::CallbackReturn on_init(
         const hardware_interface::HardwareInfo& info) override;
@@ -85,11 +60,21 @@ class IntBrainHardware : public hardware_interface::SystemInterface {
    private:
     MCUComms comms_;
     Config cfg_;
-    Motor motors[4];
+    Motor motors[2]; // Reduced from 4 to 2 for Differential Drive
     Imu imu_;
-    Battery battery_;
+
+    // ros2_control requires all interfaces to be doubles. 
+    // Booleans will be represented as 1.0 (true) and 0.0 (false).
+    
+    double tof_distance_ = 0.0;
+    double tof_angle_ = 0.0;
+    
+    double ir_left_ = 0.0;
+    double ir_right_ = 0.0;
+    
+    double user_led_cmd_ = 0.0;
 };
 
-}  // namespace int_brain_hardware
+}  // namespace jr_bot_hardware
 
-#endif  // int_brain_hardware__ACTUATOR_SYSTEM_HPP_
+#endif  // JR_BOT_HARDWARE__ACTUATOR_SYSTEM_HPP_

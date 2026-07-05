@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="jr_bot_ros2_control" params="device_addr:='/dev/ttyUSB0'">
+        <ros2_control name="JrBotSystem" type="system">
+            <hardware>
+                <plugin>jr_bot_hardware/JrBotHardware</plugin>
+                <param name="device_addr">${device_addr}</param>
+                <param name="timeout_ms">1000</param>
+            </hardware>
+
+            <joint name="left_wheel_joint">
+                <command_interface name="velocity" />
+                <state_interface name="position" />
+                <state_interface name="velocity" />
+                <param name="max_rpm">150.0</param> 
+            </joint>
+
+            <joint name="right_wheel_joint">
+                <command_interface name="velocity" />
+                <state_interface name="position" />
+                <state_interface name="velocity" />
+                <param name="max_rpm">150.0</param> 
+            </joint>
+
+            <sensor name="imu_sensor">
+                <state_interface name="angular_velocity.x" />
+                <state_interface name="angular_velocity.y" />
+                <state_interface name="angular_velocity.z" />
+                <state_interface name="linear_acceleration.x" />
+                <state_interface name="linear_acceleration.y" />
+                <state_interface name="linear_acceleration.z" />
+            </sensor>
+
+            <gpio name="user_led">
+                <command_interface name="state"/>
+            </gpio>
+
+            <gpio name="tof_sweep">
+                <state_interface name="distance"/>
+                <state_interface name="angle"/>
+            </gpio>
+
+            <gpio name="ir_sensor_left">
+                <state_interface name="state"/>
+            </gpio>
+            
+            <gpio name="ir_sensor_right">
+                <state_interface name="state"/>
+            </gpio>
+
+        </ros2_control>
+    </xacro:macro>
+
+</robot>

@@ -19,12 +19,17 @@ ekf_filter_node:
                    false, false, false]
     odom0_differential: false
 
-    imu0: /imu_sensor_broadcaster/imu
+    # Point to the new Madgwick output, NOT the raw broadcaster
+    imu0: /imu/data 
+    
+    # We are now feeding it the calculated Yaw (index 5) along with 
+    # the angular velocities and linear accelerations.
     imu0_config: [false, false, false,
-                  false, false, true,
+                  false, false, true,  # <--- Yaw is now TRUE
                   false, false, false,
                   false, false, true,
-                  true, true, false]
+                  true,  true,  false]
+    
     imu0_differential: false
     imu0_remove_gravitational_acceleration: true
     

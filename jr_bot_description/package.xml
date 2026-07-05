@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>int_brain_description</name>
+  <name>jr_bot_description</name>
   <version>1.0.0</version>
-  <description>URDF description package for 4 mecanum wheel drive bot</description>
-  <maintainer email="khandelwalkostubh@gmail.com">Kostubh Khandelwal</maintainer>
+  <description>URDF description package for 2 differential wheel drive bot</description>
+  <maintainer email="eccentric.orange2@gmail.com">Anuj Verma</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -12,7 +12,7 @@
   <!-- Dependencies -->
   <depend>robot_state_publisher</depend>
   <depend>joint_state_publisher_gui</depend>
-  <depend>int_brain_hardware</depend>
+  <depend>jr_bot_hardware</depend>
   <depend>rviz2</depend>
 
   <!-- Execution dependencies -->

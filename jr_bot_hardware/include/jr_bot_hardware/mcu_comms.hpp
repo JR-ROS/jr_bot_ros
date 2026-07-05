@@ -1,14 +1,16 @@
+#ifndef JR_BOT_HARDWARE__MCU_COMMS_HPP_
+#define JR_BOT_HARDWARE__MCU_COMMS_HPP_
+
 #include <libserial/SerialStream.h>
+#include <vector>
+#include <string>
 #include "bot_speak.h"
 
-#ifndef int_brain_hardware__MCU_COMMS_HPP_
-#define int_brain_hardware__MCU_COMMS_HPP_
-
-// MCU comms config
-#define MCU_USB_COMM_PAYLOAD_SIZE sizeof(uint64_t) * 10
+// MCU comms config (Largest payload is IMU at 12 bytes, setting to 32 for safety)
+#define MCU_USB_COMM_PAYLOAD_SIZE 32
 
 /// @brief Maximum payload size for USB communication, used to create buffers.
-#define	MCU_USB_COMM_MAX_PACKET_SIZE (BOT_SPEAK_MIN_PACKET_SIZE + MCU_USB_COMM_PAYLOAD_SIZE)
+#define MCU_USB_COMM_MAX_PACKET_SIZE (BOT_SPEAK_MIN_PACKET_SIZE + MCU_USB_COMM_PAYLOAD_SIZE)
 
 class MCUComms {
    private:
@@ -30,9 +32,6 @@ class MCUComms {
 
     template <typename T>
     int send_data(uint8_t command_id, const std::vector<T>& data);
-
-    template <typename T>
-    int send_config(uint8_t command_id, const std::vector<T> &data);
 };
 
-#endif  // int_brain_hardware__MCU_COMMS_HPP_
+#endif  // JR_BOT_HARDWARE__MCU_COMMS_HPP_

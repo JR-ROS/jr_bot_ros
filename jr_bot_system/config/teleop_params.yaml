@@ -2,33 +2,26 @@ teleop_twist_joy_node:
   ros__parameters:
     frame: "base_link"
     publish_stamped_twist: true
-
     require_enable_button: false
     enable_turbo_button: 0
+    
+    # Removed Y-axis (No strafing on diff drive)
     axis_linear:
       x: 1
-      y: 0
     axis_angular:
       yaw: 2
 
     scale_linear:
       x: 0.5
-      y: 0.5
     scale_linear_turbo:
-      x: 1.3823
-      y: 1.3823
+      x: 1.0
 
     scale_angular:
-      yaw: 4.5
+      yaw: 2.0
     scale_angular_turbo:
-      yaw: 9.0
+      yaw: 4.0
 
     inverted_reverse: true
-
-teleop_twist_keyboard_node:
-  ros__parameters:
-    frame_id: "base_link"
-    stamped: true
 
 imu_feedback_node:
   ros__parameters:
@@ -37,10 +30,10 @@ imu_feedback_node:
 
 velocity_smoother:
   ros__parameters:
-    smoothing_frequency: 100.0
+    smoothing_frequency: 50.0
     robot_feedback: "OPEN_LOOP"
-    max_velocity: [1.3823, 1.3823, 9.0]
-    min_velocity: [-1.3823, -1.3823 , -9.0]
-    max_accel: [2.5, 2.5, 13.0]
-    max_decel: [-2.5, -2.5, -13.0]
+    max_velocity: [1.0, 0.0, 4.0]
+    min_velocity: [-1.0, 0.0, -4.0]
+    max_accel: [1.5, 0.0, 5.0]
+    max_decel: [-1.5, 0.0, -5.0]
     enable_stamped_cmd_vel: true
