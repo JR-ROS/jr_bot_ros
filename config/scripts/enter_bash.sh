@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CONTAINER_NAME="int_brain_container"
-WORKSPACE=/home/ubuntu/int_brain_ws
+CONTAINER_NAME="jr_bot_container"
+WORKSPACE=/home/ubuntu/jr_bot_ws
 TARGET=$1
 
 if [ -z "$TARGET" ]; then

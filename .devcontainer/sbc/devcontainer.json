@@ -1,9 +1,9 @@
 {
     "name": "SBC",
-    "image": "ghcr.io/eccentricorange/int_brain_sbc:aarch64-v1.0.1",
+    "image": "ghcr.io/jr-ros/jr_bot_sbc:aarch64-v1.1.1",
 
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/int_brain_ws/src,type=bind",
-    "workspaceFolder": "/home/ubuntu/int_brain_ws",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/jr_bot_ws/src,type=bind",
+    "workspaceFolder": "/home/ubuntu/jr_bot_ws",
 
     "privileged": true,
 
