@@ -3,7 +3,7 @@
 
     <xacro:include filename="$(find jr_bot_description)/urdf/jr_bot.ros2_control.xacro" />
     
-    <xacro:jr_bot_ros2_control device_addr="/dev/ttyUSB0" />
+    <xacro:jr_bot_ros2_control device_addr="/dev/ttyACM0" />
 
     <material name="black">
         <color rgba="0.1 0.1 0.1 1.0"/>

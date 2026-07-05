@@ -1,10 +1,11 @@
 #include "jr_bot_hardware/mcu_comms.hpp"
-#include "jr_bot_hardware/jr_bot_messages.hpp" // The distilled header we created earlier
+#include "jr_bot_hardware/jr_bot_messages.hpp" 
 
 #include <algorithm>
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <cstring>
 
 MCUComms::~MCUComms() {
     if (connected()) {
@@ -17,11 +18,15 @@ bool MCUComms::connect(const std::string& serial_device, int32_t timeout_ms) {
 
     try {
         serial_port.Open(serial_device);
-        // Standardize serial port settings for ESP32 UART
-        serial_port.SetBaudRate(LibSerial::BaudRate::BAUD_115200);
+        serial_port.SetBaudRate(LibSerial::BaudRate::BAUD_2000000);
         serial_port.SetCharacterSize(LibSerial::CharacterSize::CHAR_SIZE_8);
         serial_port.SetParity(LibSerial::Parity::PARITY_NONE);
         serial_port.SetStopBits(LibSerial::StopBits::STOP_BITS_1);
+        
+        // Release hardware lines so the ESP32 exits the bootloader 
+        serial_port.SetDTR(false);
+        serial_port.SetRTS(false);
+        
     } catch (const LibSerial::OpenFailed& e) {
         std::cerr << "Failed to open serial port: " << e.what() << std::endl;
         return false;
@@ -45,87 +50,93 @@ template <typename T>
 int MCUComms::req_data(uint8_t request_id, std::vector<T>& pcbData) {
     serial_port.FlushIOBuffers();
 
-    uint8_t dataBuffer[256];
-    uint8_t responseBuffer[256];
-    static uint8_t unpacked_frame_buffer[MCU_USB_COMM_PAYLOAD_SIZE];
-
-    uint32_t dataLength;
-    uint32_t numberElements;
-    std::size_t bytesToRead;
-
+    // --- 1. Pack and Transmit Request ---
+    uint8_t txBuffer[256];
+    uint32_t txLength;
     DataFrame_TypeDef requestFrame = {
         .frameID = request_id, .timestamp = 0, .dataLength = 0, .data = NULL};
 
-    DataFrame_TypeDef responseFrame = {.data = unpacked_frame_buffer};
-
-    // Route the request to expect the correctly sized response from jr_bot_messages.h
-    switch (request_id) {
-        case REQUEST_IMU_ACCEL_RAW:
-            bytesToRead = BOT_SPEAK_MIN_PACKET_SIZE + SERIALIZED_IMU_ACCEL_RAW_BYTES;
-            numberElements = UNSERIALIZED_IMU_ACCEL_RAW_SIZE;
-            break;
-
-        case REQUEST_IMU_GYRO_RAW:
-            bytesToRead = BOT_SPEAK_MIN_PACKET_SIZE + SERIALIZED_IMU_GYRO_RAW_BYTES;
-            numberElements = UNSERIALIZED_IMU_GYRO_RAW_SIZE;
-            break;
-
-        case REQUEST_TOF_STATE:
-            bytesToRead = BOT_SPEAK_MIN_PACKET_SIZE + SERIALIZED_TOF_STATE_BYTES;
-            numberElements = UNSERIALIZED_TOF_STATE_SIZE;
-            break;
-
-        case REQUEST_IR_STATES:
-            bytesToRead = BOT_SPEAK_MIN_PACKET_SIZE + SERIALIZED_IR_STATES_BYTES;
-            numberElements = UNSERIALIZED_IR_STATES_SIZE;
-            break;
-
-        default:
-            std::cerr << "Unknown request ID: " << request_id << std::endl;
-            return 1;
+    if (botSpeak_packFrame(&requestFrame, txBuffer, &txLength) != 0) {
+        return 1;
     }
 
-    T* readData = new T[numberElements];
-
     try {
-        botSpeak_packFrame(&requestFrame, dataBuffer, &dataLength);
-        serial_port.write((const char*)dataBuffer, dataLength);
+        std::vector<uint8_t> tx_data(txBuffer, txBuffer + txLength);
+        serial_port.Write(tx_data);
+        serial_port.DrainWriteBuffer();
 
-        // wait for a response
-        serial_port.read((char*)responseBuffer, bytesToRead);
+        // --- 2. Robust Receive State Machine ---
+        std::vector<uint8_t> rx_buffer;
+        uint8_t byte = 0;
+        
+        // Step A: Sync to Start Byte
+        // We read byte-by-byte, throwing away garbage until we hit START_BYTE
+        while (true) {
+            serial_port.ReadByte(byte, timeout_ms_);
+            if (byte == START_BYTE) {
+                rx_buffer.push_back(byte);
+                break;
+            }
+        }
 
-        // once we get a response, parse it
-        int result = botSpeak_unpackFrame(&responseFrame, responseBuffer, bytesToRead);
+        // Step B: Read Header
+        // Now that we are synced, grab the 12-byte header in one highly efficient block
+        LibSerial::DataBuffer header_chunk;
+        serial_port.Read(header_chunk, 12, timeout_ms_);
+        rx_buffer.insert(rx_buffer.end(), header_chunk.begin(), header_chunk.end());
 
-        if (result != 0) {
-            std::cerr << "Failed to unpack frame: " << result << std::endl;
-            delete[] readData;
+        // Step C: Extract Payload Length dynamically
+        uint32_t payload_len = 0;
+        std::memcpy(&payload_len, &rx_buffer[5], sizeof(uint32_t));
+
+        // Sanity check to prevent out-of-memory crashes from corrupted packets
+        if (payload_len > MCU_USB_COMM_PAYLOAD_SIZE) {
+            std::cerr << "Corrupted payload length: " << payload_len << std::endl;
             return 1;
         }
 
-        // Deserialize standard C++ types
+        // Step D: Read Payload + End Byte
+        LibSerial::DataBuffer body_chunk;
+        serial_port.Read(body_chunk, payload_len + 1, timeout_ms_);
+        rx_buffer.insert(rx_buffer.end(), body_chunk.begin(), body_chunk.end());
+
+        // --- 3. Unpack and Deserialize ---
+        static uint8_t unpacked_frame_buffer[MCU_USB_COMM_PAYLOAD_SIZE];
+        DataFrame_TypeDef responseFrame = {.data = unpacked_frame_buffer};
+        
+        if (botSpeak_unpackFrame(&responseFrame, rx_buffer.data(), rx_buffer.size()) != 0) {
+            std::cerr << "Failed to unpack frame ID: " << (int)request_id << std::endl;
+            return 1;
+        }
+
+        uint32_t numberElements = 0;
+        
+        // Allocate buffer based on dynamic length, not a hardcoded switch statement!
+        T* readData = new T[payload_len / sizeof(T) + 1]; 
+
         botSpeak_deserialize(readData, &numberElements, sizeof(T),
                              responseFrame.data, responseFrame.dataLength);
 
         pcbData.clear();
         for (uint32_t i = 0; i < numberElements; ++i) {
-            pcbData.push_back(static_cast<T>(readData[i]));
+            pcbData.push_back(readData[i]);
         }
-    }
-    catch (const LibSerial::ReadTimeout& ex) {
-        std::cerr << "Read timeout: " << ex.what() << std::endl;
+
         delete[] readData;
+        return 0;
+
+    } catch (const LibSerial::ReadTimeout&) {
+        // Soft-fail on timeout: Skip this control loop cycle instead of crashing the stream
+        std::cerr << "Read timeout for ID: " << (int)request_id << std::endl;
+        return 1;
+    } catch (const std::exception& e) {
+        std::cerr << "Hardware exception: " << e.what() << std::endl;
         return 1;
     }
-
-    delete[] readData;
-    return 0;
 }
 
 template <typename T>
 int MCUComms::send_data(uint8_t command_id, const std::vector<T>& data) {
-    serial_port.FlushIOBuffers();  
-
     T* trasmitBuffer = new T[data.size()];
     std::copy(data.begin(), data.end(), trasmitBuffer);
 
@@ -148,7 +159,14 @@ int MCUComms::send_data(uint8_t command_id, const std::vector<T>& data) {
         return 1;
     }
 
-    serial_port.write((const char*)frameBuffer, frameLength);
+    try {
+        std::vector<uint8_t> tx_data(frameBuffer, frameBuffer + frameLength);
+        serial_port.Write(tx_data);
+        serial_port.DrainWriteBuffer();
+    } catch (...) {
+        delete[] trasmitBuffer;
+        return 1;
+    }
 
     delete[] trasmitBuffer;
     return 0;
@@ -156,13 +174,9 @@ int MCUComms::send_data(uint8_t command_id, const std::vector<T>& data) {
 
 
 // --- Explicit Template Instantiations ---
-// This tells the compiler to pre-build these specific versions of the templates
-
-// For req_data (Receiving from ESP32)
 template int MCUComms::req_data<float>(uint8_t request_id, std::vector<float>& pcbData);
-template int MCUComms::req_data<uint16_t>(uint8_t request_id, std::vector<uint16_t>& pcbData); // For ToF
-template int MCUComms::req_data<bool>(uint8_t request_id, std::vector<bool>& pcbData);     // For IRs
+template int MCUComms::req_data<uint16_t>(uint8_t request_id, std::vector<uint16_t>& pcbData); 
+template int MCUComms::req_data<bool>(uint8_t request_id, std::vector<bool>& pcbData);     
 
-// For send_data (Sending to ESP32)
-template int MCUComms::send_data<int16_t>(uint8_t command_id, const std::vector<int16_t>& data); // For Motor PWM
-template int MCUComms::send_data<bool>(uint8_t command_id, const std::vector<bool>& data);       // For User LED
+template int MCUComms::send_data<int16_t>(uint8_t command_id, const std::vector<int16_t>& data); 
+template int MCUComms::send_data<bool>(uint8_t command_id, const std::vector<bool>& data);

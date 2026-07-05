@@ -99,6 +99,16 @@ JrBotHardware::export_state_interfaces() {
     state_interfaces.emplace_back(hardware_interface::StateInterface(
         "ir_sensor_right", "state", &ir_right_));
 
+    // Add to export_state_interfaces() for the IMU
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "orientation.w", &imu_.orientation_[0])); // imu_.orientation_[0] should be 1.0
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "orientation.x", &imu_.orientation_[1]));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "orientation.y", &imu_.orientation_[2]));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+        "imu_sensor", "orientation.z", &imu_.orientation_[3]));
+
     return state_interfaces;
 }
 
@@ -133,6 +143,9 @@ hardware_interface::CallbackReturn JrBotHardware::on_configure(
                      cfg_.device_addr.c_str());
         return hardware_interface::CallbackReturn::ERROR;
     }
+
+    // RCLCPP_INFO(rclcpp::get_logger("JrBotHardware"), "Waiting for ESP32 FreeRTOS to boot...");
+    // std::this_thread::sleep_for(std::chrono::seconds(2));
 
     RCLCPP_INFO(rclcpp::get_logger("JrBotHardware"), "Successfully configured!");
     return hardware_interface::CallbackReturn::SUCCESS;

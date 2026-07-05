@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="jr_bot_ros2_control" params="device_addr:='/dev/ttyUSB0'">
+    <xacro:macro name="jr_bot_ros2_control" params="device_addr:='/dev/ttyACM0'">
         <ros2_control name="JrBotSystem" type="system">
             <hardware>
                 <plugin>jr_bot_hardware/JrBotHardware</plugin>

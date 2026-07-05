@@ -1,20 +1,19 @@
 #ifndef JR_BOT_HARDWARE__MCU_COMMS_HPP_
 #define JR_BOT_HARDWARE__MCU_COMMS_HPP_
 
-#include <libserial/SerialStream.h>
+// Change the include at the top:
+#include <libserial/SerialPort.h>
 #include <vector>
 #include <string>
 #include "bot_speak.h"
 
-// MCU comms config (Largest payload is IMU at 12 bytes, setting to 32 for safety)
 #define MCU_USB_COMM_PAYLOAD_SIZE 32
-
-/// @brief Maximum payload size for USB communication, used to create buffers.
 #define MCU_USB_COMM_MAX_PACKET_SIZE (BOT_SPEAK_MIN_PACKET_SIZE + MCU_USB_COMM_PAYLOAD_SIZE)
 
 class MCUComms {
    private:
-    LibSerial::SerialStream serial_port;
+    // Change this to SerialPort
+    LibSerial::SerialPort serial_port;
     int timeout_ms_;
 
    public:
