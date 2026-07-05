@@ -7,6 +7,7 @@ controller_manager:
 
     imu_sensor_broadcaster:
       type: imu_sensor_broadcaster/IMUSensorBroadcaster
+      
 
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
@@ -22,7 +23,7 @@ diff_drive_controller:
     right_wheel_names: ["right_wheel_joint"]
 
     wheel_separation: 0.16
-    wheel_radius: 0.04
+    wheel_radius: 0.03
 
     wheel_separation_multiplier: 1.0
     left_wheel_radius_multiplier: 1.0
@@ -35,6 +36,6 @@ diff_drive_controller:
     # we tell the controller to use position feedback
     position_feedback: true
     open_loop: false
-    enable_odom_tf: true
+    enable_odom_tf: false
 
     cmd_vel_timeout: 0.5

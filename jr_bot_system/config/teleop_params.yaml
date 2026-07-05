@@ -12,9 +12,9 @@ teleop_twist_joy_node:
       yaw: 2
 
     scale_linear:
-      x: 0.5
+      x: 0.3
     scale_linear_turbo:
-      x: 1.0
+      x: 0.6
 
     scale_angular:
       yaw: 2.0
@@ -32,8 +32,8 @@ velocity_smoother:
   ros__parameters:
     smoothing_frequency: 50.0
     robot_feedback: "OPEN_LOOP"
-    max_velocity: [1.0, 0.0, 4.0]
-    min_velocity: [-1.0, 0.0, -4.0]
+    max_velocity: [0.6, 0.6, 4.0]
+    min_velocity: [-0.6, 0.6, -4.0]
     max_accel: [1.5, 0.0, 5.0]
     max_decel: [-1.5, 0.0, -5.0]
     enable_stamped_cmd_vel: true

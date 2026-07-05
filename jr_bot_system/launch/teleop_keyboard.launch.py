@@ -9,12 +9,12 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     # Get package's share directory path
-    int_brain_system_pkg_share = FindPackageShare('int_brain_system')
+    jr_bot_system_pkg_share = FindPackageShare('jr_bot_system')
 
-    teleop_params = PathJoinSubstitution([int_brain_system_pkg_share, 'config', 'teleop_params.yaml'])
+    teleop_params = PathJoinSubstitution([jr_bot_system_pkg_share, 'config', 'teleop_params.yaml'])
     rviz_config_file = LaunchConfiguration("rviz_config_file", 
                             default=PathJoinSubstitution([
-                                int_brain_system_pkg_share, 'config', 'view.rviz'
+                                jr_bot_system_pkg_share, 'config', 'view.rviz'
                             ])
                         )
 

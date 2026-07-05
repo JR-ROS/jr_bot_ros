@@ -109,8 +109,16 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        rviz_arg, debug_arg, stamp_twist_arg,
-        control_node, robot_state_pub_node,
-        joint_state_broadcaster_spawner, imu_broadcaster_spawner, diff_drive_controller_spawner,
-        twist_stamper, robot_localization, rviz_node, madgwick_filter_node
+        rviz_arg,
+        debug_arg,
+        stamp_twist_arg,
+        control_node,
+        robot_state_pub_node,
+        joint_state_broadcaster_spawner,
+        imu_broadcaster_spawner,
+        diff_drive_controller_spawner,
+        twist_stamper,
+        robot_localization,
+        rviz_node,
+        madgwick_filter_node
     ])
