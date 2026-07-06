@@ -20,8 +20,7 @@ controller_interface::InterfaceConfiguration
 TofLaserScanBroadcaster::state_interface_configuration() const {
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
-    // Format is always: <joint_name>/<interface_name>
-    config.names = {"tof_sweep_distance/position", "tof_sweep_angle/position"};
+    config.names = {"tof_sweep/distance", "tof_sweep/angle"};
     return config;
 }
 
@@ -40,8 +39,9 @@ controller_interface::CallbackReturn TofLaserScanBroadcaster::on_configure(
     
     // Configure standard static LiDAR parameters
     scan_msg_.header.frame_id = "tof_link"; // Make sure this matches your URDF
-    scan_msg_.angle_min = 0.0;
-    scan_msg_.angle_max = M_PI; // 180 degrees in rad
+    
+    scan_msg_.angle_min = -M_PI / 2.0; // -90 degrees (Right side of the robot)
+    scan_msg_.angle_max = M_PI / 2.0;  // +90 degrees (Left side of the robot)
     scan_msg_.angle_increment = M_PI / 180.0; // 1 degree resolution
     
     // Adjust these based on your specific ToF sensor specs (e.g., VL53L0X)

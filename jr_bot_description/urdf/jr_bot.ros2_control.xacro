@@ -44,12 +44,10 @@
                 <state_interface name="state"/>
             </gpio>
 
-            <joint name="tof_sweep_distance">
-                <state_interface name="position"/>
-            </joint>
-            <joint name="tof_sweep_angle">
-                <state_interface name="position"/>
-            </joint>
+            <sensor name="tof_sweep">
+                <state_interface name="distance"/>
+                <state_interface name="angle"/>
+            </sensor>
 
         </ros2_control>
     </xacro:macro>

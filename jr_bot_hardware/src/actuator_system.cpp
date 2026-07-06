@@ -96,9 +96,9 @@ JrBotHardware::export_state_interfaces() {
 
     // Export Custom ToF Interfaces
     state_interfaces.emplace_back(hardware_interface::StateInterface(
-        "tof_sweep_distance", hardware_interface::HW_IF_POSITION, &tof_distance_));
+        "tof_sweep", "distance", &tof_distance_));
     state_interfaces.emplace_back(hardware_interface::StateInterface(
-        "tof_sweep_angle", hardware_interface::HW_IF_POSITION, &tof_angle_));
+        "tof_sweep", "angle", &tof_angle_));
 
     // Export IR Sensor Interfaces
     state_interfaces.emplace_back(hardware_interface::StateInterface(
@@ -241,6 +241,7 @@ hardware_interface::return_type JrBotHardware::read(
     if (comms_.req_data(REQUEST_TOF_STATE, tof_data) == 0 && tof_data.size() == 2) {
         tof_distance_ = static_cast<double>(tof_data[0]);
         tof_angle_    = static_cast<double>(tof_data[1]);
+        RCLCPP_DEBUG(rclcpp::get_logger("JrBotHardware"), "ToF Distance: %f mm, Angle: %f deg", tof_distance_, tof_angle_);
     } else {
         RCLCPP_WARN(rclcpp::get_logger("JrBotHardware"), "Failed to read ToF State");
     }
