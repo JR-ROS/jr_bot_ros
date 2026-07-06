@@ -46,7 +46,7 @@ controller_interface::CallbackReturn TofLaserScanBroadcaster::on_configure(
     
     // Adjust these based on your specific ToF sensor specs (e.g., VL53L0X)
     scan_msg_.range_min = 0.03; // 3 cm
-    scan_msg_.range_max = 2.0;  // 2 meters
+    scan_msg_.range_max = 8.0;  // 8 meters
     
     // 181 buckets for 0-180 degrees inclusive. Initialize with Infinity.
     scan_msg_.ranges.assign(181, std::numeric_limits<float>::infinity());
