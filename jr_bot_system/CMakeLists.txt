@@ -15,10 +15,6 @@ ament_target_dependencies(imu_feedback_node rclcpp sensor_msgs)
 install(TARGETS imu_feedback_node DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME}/)
 
-add_executable(tof_scan_publisher src/tof_scan_publisher.cpp)
-ament_target_dependencies(tof_scan_publisher rclcpp sensor_msgs)
-install(TARGETS tof_scan_publisher DESTINATION lib/${PROJECT_NAME})
-
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)

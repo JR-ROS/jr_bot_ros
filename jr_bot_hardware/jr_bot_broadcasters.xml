@@ -1,0 +1,7 @@
+<library path="jr_bot_hardware">
+  <class name="jr_bot_hardware/TofLaserScanBroadcaster" type="jr_bot_controllers::TofLaserScanBroadcaster" base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Reads ToF hardware state interfaces and publishes sensor_msgs/LaserScan.
+    </description>
+  </class>
+</library>

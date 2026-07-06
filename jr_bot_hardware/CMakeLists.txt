@@ -11,6 +11,8 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   rclcpp
   rclcpp_lifecycle
   botspeak
+  controller_interface
+  sensor_msgs
 )
 
 find_package(ament_cmake REQUIRED)
@@ -27,6 +29,7 @@ add_library(
   src/actuator_system.cpp
   src/mcu_comms.cpp
   src/motor.cpp
+  src/tof_laser_scan_broadcaster.cpp
 )
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -42,6 +45,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC botspeak serial)
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface jr_bot_hardware.xml) 
+pluginlib_export_plugin_description_file(controller_interface jr_bot_broadcasters.xml)
 
 install(DIRECTORY include/
   DESTINATION include

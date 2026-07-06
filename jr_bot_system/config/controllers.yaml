@@ -7,7 +7,9 @@ controller_manager:
 
     imu_sensor_broadcaster:
       type: imu_sensor_broadcaster/IMUSensorBroadcaster
-      
+
+    tof_broadcaster:
+      type: jr_bot_hardware/TofLaserScanBroadcaster      
 
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController

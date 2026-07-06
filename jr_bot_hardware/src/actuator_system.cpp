@@ -60,14 +60,19 @@ JrBotHardware::export_state_interfaces() {
     std::vector<hardware_interface::StateInterface> state_interfaces;
 
     // Export fake encoder states for the motors
-    for (size_t i = 0; i < info_.joints.size(); ++i) {
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            info_.joints[i].name, hardware_interface::HW_IF_POSITION,
-            &motors[i].state_pos_));
+    int motor_idx = 0;
+    for (const auto& joint : info_.joints) {
+        if (joint.name == "left_wheel_joint" || joint.name == "right_wheel_joint") {
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                joint.name, hardware_interface::HW_IF_POSITION,
+                &motors[motor_idx].state_pos_));
 
-        state_interfaces.emplace_back(hardware_interface::StateInterface(
-            info_.joints[i].name, hardware_interface::HW_IF_VELOCITY,
-            &motors[i].state_vel_));
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                joint.name, hardware_interface::HW_IF_VELOCITY,
+                &motors[motor_idx].state_vel_));
+            
+            motor_idx++;
+        }
     }
 
     // Export 6-DOF IMU states
@@ -91,9 +96,9 @@ JrBotHardware::export_state_interfaces() {
 
     // Export Custom ToF Interfaces
     state_interfaces.emplace_back(hardware_interface::StateInterface(
-        "tof_sweep", "distance", &tof_distance_));
+        "tof_sweep_distance", hardware_interface::HW_IF_POSITION, &tof_distance_));
     state_interfaces.emplace_back(hardware_interface::StateInterface(
-        "tof_sweep", "angle", &tof_angle_));
+        "tof_sweep_angle", hardware_interface::HW_IF_POSITION, &tof_angle_));
 
     // Export IR Sensor Interfaces
     state_interfaces.emplace_back(hardware_interface::StateInterface(
@@ -118,10 +123,15 @@ std::vector<hardware_interface::CommandInterface>
 JrBotHardware::export_command_interfaces() {
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
-    for (size_t i = 0; i < info_.joints.size(); ++i) {
-        command_interfaces.emplace_back(hardware_interface::CommandInterface(
-            info_.joints[i].name, hardware_interface::HW_IF_VELOCITY,
-            &motors[i].cmd_vel_));
+    int motor_idx = 0;
+    for (const auto& joint : info_.joints) {
+        if (joint.name == "left_wheel_joint" || joint.name == "right_wheel_joint") {
+            command_interfaces.emplace_back(hardware_interface::CommandInterface(
+                joint.name, hardware_interface::HW_IF_VELOCITY,
+                &motors[motor_idx].cmd_vel_));
+            
+            motor_idx++;
+        }
     }
 
     // Export User LED Command Interface

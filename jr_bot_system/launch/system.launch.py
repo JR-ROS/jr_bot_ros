@@ -73,6 +73,12 @@ def generate_launch_description():
         arguments=["diff_drive_controller", "--controller-manager", "/controller_manager"],
     )
 
+    tof_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["tof_broadcaster", "--controller-manager", "/controller_manager"],
+    )
+
     robot_localization = Node(
         package="robot_localization",
         executable="ekf_node",
@@ -107,12 +113,7 @@ def generate_launch_description():
             ('/imu/data', '/imu/data')
         ]
     )
-
-    tof_scan_node = Node(
-        package="jr_bot_system",
-        executable="tof_scan_publisher",
-        output="screen"
-    )
+    
 
     return LaunchDescription([
         rviz_arg,
@@ -123,9 +124,9 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         imu_broadcaster_spawner,
         diff_drive_controller_spawner,
+        tof_broadcaster_spawner,
         twist_stamper,
         robot_localization,
         rviz_node,
         madgwick_filter_node,
-        tof_scan_node,
     ])
