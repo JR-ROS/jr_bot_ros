@@ -36,7 +36,7 @@ def generate_launch_description():
         parameters=[robot_description, robot_controllers],
         output="screen",
         remappings=[
-            ("/diff_drive_controller/cmd_vel", cmd_vel_topic),
+            ("/diff_drive_controller/cmd_vel", "/cmd_vel"),
             ("/diff_drive_controller/odom", "/jr_bot/odom"),
         ],
     )

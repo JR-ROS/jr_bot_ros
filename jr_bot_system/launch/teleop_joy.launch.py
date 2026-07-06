@@ -8,13 +8,13 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    # Get package's share directory path
-    int_brain_system_pkg_share = FindPackageShare('int_brain_system')
+    # Corrected package name
+    jr_bot_system_pkg_share = FindPackageShare('jr_bot_system')
 
-    teleop_params = PathJoinSubstitution([int_brain_system_pkg_share, 'config', 'teleop_params.yaml'])
+    teleop_params = PathJoinSubstitution([jr_bot_system_pkg_share, 'config', 'teleop_params.yaml'])
     rviz_config_file = LaunchConfiguration("rviz_config_file", 
                             default=PathJoinSubstitution([
-                                int_brain_system_pkg_share, 'config', 'view.rviz'
+                                jr_bot_system_pkg_share, 'config', 'view.rviz'
                             ])
                         )
 
@@ -42,8 +42,9 @@ def generate_launch_description():
         name='game_controller_node',
     )
 
+    # Corrected package name here as well
     imu_feedback_node = Node(
-        package='int_brain_system',
+        package='jr_bot_system',
         executable='imu_feedback_node',
         name='imu_feedback_node',
         parameters=[teleop_params],
