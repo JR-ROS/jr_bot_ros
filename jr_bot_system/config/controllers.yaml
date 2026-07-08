@@ -36,8 +36,8 @@ diff_drive_controller:
 
     # Since we are using fake open-loop odometry on the ESP32, 
     # we tell the controller to use position feedback
-    position_feedback: true
-    open_loop: false
+    position_feedback: false
+    open_loop: true
     enable_odom_tf: false
     use_stamped_vel: true
 
