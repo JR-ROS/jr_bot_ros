@@ -12,12 +12,12 @@ teleop_twist_joy_node:
       yaw: 2
 
     scale_linear:
-      x: 0.6
+      x: 0.3
     scale_linear_turbo:
       x: 0.6
 
     scale_angular:
-      yaw: 8.0
+      yaw: 2.0
     scale_angular_turbo:
       yaw: 4.0
 
@@ -27,8 +27,6 @@ teleop_twist_keyboard_node:
   ros__parameters:
     frame_id: "base_link"
     stamped: true
-    speed: 0.6  # Default starting linear velocity (m/s)
-    turn: 8.0
 
 imu_feedback_node:
   ros__parameters:
@@ -37,10 +35,10 @@ imu_feedback_node:
 
 velocity_smoother:
   ros__parameters:
-    smoothing_frequency: 100.0
+    smoothing_frequency: 50.0
     robot_feedback: "OPEN_LOOP"
-    max_velocity: [0.6, 0.0, 8.0]
-    min_velocity: [-0.6, 0.0, -8.0]
-    max_accel: [100.0, 0.0, 100.0]
-    max_decel: [-100.0, 0.0, -100.0]
+    max_velocity: [0.6, 0.0, 4.0]
+    min_velocity: [-0.6, 0.0, -4.0]
+    max_accel: [1.5, 0.0, 5.0]
+    max_decel: [-1.5, 0.0, -5.0]
     enable_stamped_cmd_vel: true
