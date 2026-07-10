@@ -10,12 +10,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get package's share directory path
-    int_brain_description_path = get_package_share_directory('int_brain_description')
+    jr_bot_description_path = get_package_share_directory('jr_bot_description')
 
-    rviz_config_file = LaunchConfiguration("rviz_config_file", default=join(int_brain_description_path, 'config', 'view.rviz'))
+    rviz_config_file = LaunchConfiguration("rviz_config_file", default=join(jr_bot_description_path, 'config', 'view.rviz'))
 
     # Path to the Xacro file
-    xacro_path = join(int_brain_description_path, 'urdf', 'int_brain.xacro')
+    xacro_path = join(jr_bot_description_path, 'urdf', 'jr_bot.xacro')
 
     # Launch the robot_state_publisher node
     robot_state_publisher = Node(

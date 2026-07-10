@@ -4,7 +4,7 @@
   <name>jr_bot_system</name>
   <version>1.0.0</version>
   <description>System launch and configuration for jr_bot</description>
-  <maintainer email="khandelwalkostubh@gmail.com">Kostubh Khandelwal</maintainer>
+  <maintainer email="eccentric.orange2@gmail.com">Eccentric Orange</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

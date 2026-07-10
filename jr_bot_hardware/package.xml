@@ -4,7 +4,7 @@
   <name>jr_bot_hardware</name>
   <version>0.1.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="root@todo.todo">root</maintainer>
+  <maintainer email="eccentric.orange2@gmail.com">Eccentric Orange</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
