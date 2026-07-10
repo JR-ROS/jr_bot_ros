@@ -1,5 +1,5 @@
-#ifndef INT_BRAIN_HARDWARE_IMU_HPP
-#define INT_BRAIN_HARDWARE_IMU_HPP
+#ifndef JR_BOT_HARDWARE_IMU_HPP
+#define JR_BOT_HARDWARE_IMU_HPP
 
 #include <string>
 
@@ -29,4 +29,4 @@ class Imu {
     }
 };
 
-#endif  // INT_BRAIN_HARDWARE_IMU_HPP
+#endif  // JR_BOT_HARDWARE_IMU_HPP

@@ -11,7 +11,7 @@ find_package(robot_state_publisher REQUIRED)
 # find_package(rviz2 REQUIRED)
 
 # Install launch files
-install(DIRECTORY launch config urdf meshes
+install(DIRECTORY launch config urdf
   DESTINATION share/${PROJECT_NAME}/
 )
 

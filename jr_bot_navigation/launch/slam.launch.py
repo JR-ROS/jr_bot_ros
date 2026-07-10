@@ -14,7 +14,7 @@ from lifecycle_msgs.msg import Transition
 
 def generate_launch_description():
     # Get package's share directory path
-    int_brain_navigation_pkg_share = FindPackageShare('int_brain_navigation')
+    jr_bot_navigation_pkg_share = FindPackageShare('jr_bot_navigation')
 
     autostart = LaunchConfiguration('autostart')
     use_lifecycle_manager = LaunchConfiguration("use_lifecycle_manager")
@@ -43,7 +43,7 @@ def generate_launch_description():
         'slam_params_file',
         default_value=PathJoinSubstitution(
             [
-                int_brain_navigation_pkg_share,
+                jr_bot_navigation_pkg_share,
                 'config',
                 'mapper_params_online_async.yaml'
             ]
@@ -53,7 +53,7 @@ def generate_launch_description():
     rviz_config_file = LaunchConfiguration("rviz_config_file",
         default=PathJoinSubstitution(
             [
-                int_brain_navigation_pkg_share,
+                jr_bot_navigation_pkg_share,
                 'config',
                 'view.rviz'
             ]

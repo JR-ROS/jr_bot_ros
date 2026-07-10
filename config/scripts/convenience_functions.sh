@@ -11,7 +11,7 @@ alias wsd="rm -rf $WORKSPACE/build $WORKSPACE/install $WORKSPACE/log &&\
             echo \"Deleted build, install, and log directories.\""
 
 # god forsaken rosdep install alias
-## if environment variable PLATFORM is "sbc", skip the "int_brain_gazebo" package
+## if environment variable PLATFORM is "sbc", skip the "jr_bot_gazebo" package
 if [ "$PLATFORM" == "sbc" ]; then
 
     # Read the keys to ignore from the file into a variable

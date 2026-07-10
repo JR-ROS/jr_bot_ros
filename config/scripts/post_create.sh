@@ -12,7 +12,7 @@ sudo apt update -y && \
 rosdep update
 
 
-## if environment variable PLATFORM is "sbc", skip the "int_brain_gazebo" package
+## if environment variable PLATFORM is "sbc", skip the "jr_bot_gazebo" package
 if [ "$PLATFORM" == "sbc" ]; then
 
     # Read the keys to ignore from the file into a variable
